@@ -1,17 +1,32 @@
 SELECT 
-  role.title, role.department_id, role.salary, department.name 
+  role.title, role.salary, department.name 
 FROM role 
-JOIN department ON role.department_id = department.id;
+JOIN department ON role.department = department.id;
 
-
-SELECT * FROM department;
 
 SELECT 
-    role.id, role.title, department.name AS department, role.salary
-FROM role JOIN department ON role.department_id = department.id;
+  * 
+FROM department;
 
 SELECT 
-  employee.id, employee.first_name, employee.last_name, department.name AS department, role.salary, employee.manager_id
-FROM employee 
-JOIN role ON employee.role_id = role.department_id
-JOIN department ON role.department_id = department.id;
+    role.id, 
+    role.title, 
+    department.name AS department, 
+    role.salary
+FROM role 
+JOIN department ON role.department = department.id;
+
+SELECT 
+  e.id, 
+  e.first_name, 
+  e.last_name, 
+  r.title, 
+  d.name AS department,
+  r.salary, 
+  CASE 
+    WHEN m.first_name IS NOT NULL AND m.last_name IS NOT NULL THEN m.first_name || ' ' || m.last_name ELSE NULL 
+  END AS manager_id
+FROM employee e
+JOIN role r ON e.role_id = r.id
+JOIN department d ON r.department = d.id
+LEFT JOIN employee m ON e.manager_id = m.id;
