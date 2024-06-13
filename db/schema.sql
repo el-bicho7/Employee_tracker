@@ -3,12 +3,12 @@ CREATE DATABASE employees_db;
 
 \c employees_db;
 
-CREATE TABLE department {
+CREATE TABLE department (
   id SERIAL PRIMARY KEY,
   name VARCHAR(30) UNIQUE NOT NULL
-};
+  );
 
-CREATE TABLE role {
+CREATE TABLE role (
   id SERIAL PRIMARY KEY,
   title VARCHAR(30) UNIQUE NOT NULL,
   department_id INTEGER NOT NULL,
@@ -16,9 +16,9 @@ CREATE TABLE role {
   FOREIGN KEY (department_id)
   REFERENCES department(id)
   ON DELETE SET NULL
-};
+);
 
-CREATE TABLE employee {
+CREATE TABLE employee (
   id SERIAL PRIMARY KEY,
   first_name VARCHAR(30) NOT NULL, 
   last_name VARCHAR(30) NOT NULL, 
@@ -29,4 +29,4 @@ CREATE TABLE employee {
   ON DELETE SET NULL, 
   FOREIGN KEY (manager_id)
   REFERENCES employee(id)
-};
+);
