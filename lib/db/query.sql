@@ -8,13 +8,7 @@ SELECT
   * 
 FROM department;
 
-SELECT 
-    role.id, 
-    role.title, 
-    department.name AS department, 
-    role.salary
-FROM role 
-JOIN department ON role.department = department.id;
+SELECT role.id, role.title, department.name AS department, role.salary FROM role JOIN department ON role.department = department.id;
 
 SELECT 
   e.id, 
@@ -30,3 +24,4 @@ FROM employee e
 JOIN role r ON e.role_id = r.id
 JOIN department d ON r.department = d.id
 LEFT JOIN employee m ON e.manager_id = m.id;
+

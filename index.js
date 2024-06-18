@@ -1,5 +1,8 @@
-const express = require('express');
-const { Pool } = require('pg');
+// const express = require('express');
+const db = require('./connection/connection');
+const Department = require('./lib/dpt');
+const Role = require('./lib/role');
+const Employee = require('./lib/employee');;
 const inquirer = require('inquirer');
 const actions = [
   'Add Department',
@@ -23,7 +26,7 @@ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ __
 |_|                                                                         |_|     
  _                  _      ____  _      ____  _____ _____ ____                _     
 | |                / \__/|/  _ \/ \  /|/  _ \/  __//  __//  __\              | |    
-\_/                | |\/||| / \|| |\ ||| / \|| |  _|  \  |  \/|              \_/    
+\_/                | |\/||| / \|| |\ ||| / \|| |  _|  \    |  \/|              \_/    
  _                 | |  ||| |-||| | \||| |-||| |_//|  /_ |    /               _     
 / \                \_/  \|\_/ \|\_/  \|\_/ \|\____\\____\\_/\_\              / \    
 |_|                                                                          |_|    
@@ -32,37 +35,51 @@ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ __
 _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ 
 \____\\____\\____\\____\\____\\____\\____\\____\\____\\____\\____\\____\\____\\____\
 `;
-const PORT = process.env.PORT || 3001;
-const app = express();
 
-// Express middleware
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-
-const pool = new Pool(
-  {
-    host: 'localhost',
-    user: 'postgres',
-    password: 'ylakesso',
-    database: 'employees_db'
-  },
-  console.log(employeeManagerArt)
-)
-
-pool.connect(err => {
+db.connect(err => {
   if (err) throw err;
   startApp();
 })
 
 
 function viewAllDepartments(){
-  pool.query('SELECT * FROM department;', function (err, { rows }) {
-    if(err) throw err;
-    console.log(rows);
-    startApp(); 
+  let department = new Department();
+  department.getAll().then((rows) => {
+    console.table(rows);
   })
-}
+  .then(() => {
+    startApp();
+  })
+  .catch((err) => {
+    console.error(err)
+  });
+};
 
+function viewAllRoles(){
+  let role = new Role();
+  role.getAll().then((rows) => {
+    console.table(rows);
+  })
+  .then(() => {
+    startApp();
+  })
+  .catch((err) => {
+    console.error(err)
+  });
+};
+
+function viewAllEmployees(){
+  let employee = new Employee();
+  employee.getAll().then((rows) => {
+    console.table(rows);
+  })
+  .then(() => {
+    startApp();
+  })
+  .catch((err) => {
+    console.error(err)
+  });
+};
 
 function startApp(){
   inquirer
