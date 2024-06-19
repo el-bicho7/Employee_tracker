@@ -1,85 +1,27 @@
 // const express = require('express');
 const db = require('./connection/connection');
-const Department = require('./lib/dpt');
-const Role = require('./lib/role');
-const Employee = require('./lib/employee');;
+const { viewAllDepartments, addDepartment } = require('./lib/scripts/dpts');
+const { viewAllEmployees, addEmployee } = require('./lib/scripts/employees');
+const { viewAllRoles, addRole } = require('./lib/scripts/roles');
 const inquirer = require('inquirer');
 const actions = [
   'Add Department',
   'Add Employee',
-  'Update Employee Role',
+  'Add Role',
   'View All Employees',
   'View All Departments',
   'View All Roles',
   'Quit'
 ];
-const employeeManagerArt = `
-_____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ 
-\____\\____\\____\\____\\____\\____\\____\\____\\____\\____\\____\\____\\____\\____\
-                                                                                    
-                                                                                    
- _                  _____ _      ____  _     ____ ___  _ _____ _____         _      
-| |                /  __// \__/|/  __\/ \   /  _ \\  \///  __//  __/        | |     
-\_/                |  \  | |\/|||  \/|| |   | / \| \  / |  \  |  \          \_/     
- _                 |  /_ | |  |||  __/| |_/\| \_/| / /  |  /_ |  /_          _      
-/ \                \____\\_/  \|\_/   \____/\____//_/   \____\\____\        / \     
-|_|                                                                         |_|     
- _                  _      ____  _      ____  _____ _____ ____                _     
-| |                / \__/|/  _ \/ \  /|/  _ \/  __//  __//  __\              | |    
-\_/                | |\/||| / \|| |\ ||| / \|| |  _|  \    |  \/|              \_/    
- _                 | |  ||| |-||| | \||| |-||| |_//|  /_ |    /               _     
-/ \                \_/  \|\_/ \|\_/  \|\_/ \|\____\\____\\_/\_\              / \    
-|_|                                                                          |_|    
-                                                                                    
-                                                                                    
-_____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ _____ 
-\____\\____\\____\\____\\____\\____\\____\\____\\____\\____\\____\\____\\____\\____\
-`;
+const employeeManagerArt = `Welcome to the employee database`;
 
 db.connect(err => {
   if (err) throw err;
+  console.log(employeeManagerArt);
   startApp();
 })
 
-
-function viewAllDepartments(){
-  let department = new Department();
-  department.getAll().then((rows) => {
-    console.table(rows);
-  })
-  .then(() => {
-    startApp();
-  })
-  .catch((err) => {
-    console.error(err)
-  });
-};
-
-function viewAllRoles(){
-  let role = new Role();
-  role.getAll().then((rows) => {
-    console.table(rows);
-  })
-  .then(() => {
-    startApp();
-  })
-  .catch((err) => {
-    console.error(err)
-  });
-};
-
-function viewAllEmployees(){
-  let employee = new Employee();
-  employee.getAll().then((rows) => {
-    console.table(rows);
-  })
-  .then(() => {
-    startApp();
-  })
-  .catch((err) => {
-    console.error(err)
-  });
-};
+exports.startApp = startApp;
 
 function startApp(){
   inquirer
@@ -107,11 +49,12 @@ function startApp(){
         case 'Add Employee':
           addEmployee()
           break;
-        case 'Update Employee Role':
-          updateEmployee()
+        case 'Add Role':
+          addRole()
           break;
         case 'Quit':
           console.log("Press ctrl + c to close.")
           break;
       }
   })};
+
