@@ -1,26 +1,29 @@
 // const express = require('express');
 const db = require('./connection/connection');
+// Require the functions from the scripts and inquirer
 const { viewAllDepartments, addDepartment } = require('./lib/scripts/dpts');
 const { viewAllEmployees, addEmployee } = require('./lib/scripts/employees');
 const { viewAllRoles, addRole } = require('./lib/scripts/roles');
 const inquirer = require('inquirer');
 const actions = [
   'Add Department',
-  'Add Employee',
-  'Add Role',
-  'View All Employees',
   'View All Departments',
+  'Add Employee',
+  'View All Employees',
+  'Add Role',
   'View All Roles',
   'Quit'
 ];
 const employeeManagerArt = `Welcome to the employee database`;
 
+// Connect to the dataBase
 db.connect(err => {
   if (err) throw err;
   console.log(employeeManagerArt);
   startApp();
 })
 
+// Export the startApp function
 exports.startApp = startApp;
 
 function startApp(){
@@ -33,6 +36,7 @@ function startApp(){
       choices: actions
     }]
   ).then((response) =>{
+    // Use the switch case to execute to execute the function based on the value 
       switch (response.action) {
         case 'View All Departments':
           viewAllDepartments()
